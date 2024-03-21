@@ -1,0 +1,44 @@
+services:
+  database:
+    hostname: database
+    image: postgres:15.1-alpine
+    restart: always
+    environment:
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=postgres
+    ports:
+      - "5432:5432"
+    volumes:
+      - elof_scavenger_database:/var/lib/postgresql/scavenger/data2
+    networks:
+      nw:
+        aliases:
+          - database
+  scavenger-app:
+    build: ./
+    command: /srv/telegram_admin/run.sh
+    environment:
+      - DATABASE_URL=database
+      - DATABASE_PASSWORD=postgres
+      - DATABASE_USER=postgres
+      - DATABASE_PORT=5432
+      - TABLE_NAME=scavenger_main
+      - DEBUG=True
+      - SERVER=False
+    ports:
+      - "89:88"
+    depends_on:
+      - database
+    networks:
+      nw:
+        aliases:
+          - scavenger-app
+
+networks:
+  nw:
+  share:
+    driver:
+      bridge
+
+volumes:
+  elof_scavenger_database:
