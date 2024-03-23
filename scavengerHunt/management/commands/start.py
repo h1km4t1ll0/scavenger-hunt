@@ -1,13 +1,12 @@
 import time
+from traceback import print_exc
+
 from django.core.management.base import BaseCommand
+
+import scavengerHunt.src.bot
 from scavengerHunt.src.bot import bot
 
 
 class Command(BaseCommand):
     def handle(self, *args, **options):
-        try:
-            bot.polling(none_stop=True, interval=5)
-        except Exception as e:
-            print(str(e))
-            time.sleep(1)
-            self.handle()
+        scavengerHunt.src.bot.pohuy()

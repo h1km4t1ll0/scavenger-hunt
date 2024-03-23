@@ -4,6 +4,39 @@ from django.utils.translation import gettext_lazy as _
 from scavengerHunt.src.shared import gen_uuid
 
 
+class Task(models.Model):
+    name = models.TextField(
+        verbose_name='Название задания',
+        null=False,
+        blank=False
+    )
+
+    class Type(models.IntegerChoices):
+        SIMPLE = 0, _("Простая задача")
+
+    type = models.IntegerField(
+        choices=Type,
+        default=Type.SIMPLE,
+    )
+
+    description = models.TextField(
+        verbose_name='Описание задания',
+        null=False,
+        blank=False
+    )
+
+    answer = models.TextField(
+        verbose_name='Правильный ответ',
+        null=False,
+        blank=False
+    )
+
+    objects = models.Manager()
+
+    def __str__(self):
+        return self.name
+
+
 class Team(models.Model):
     name = models.TextField(
         verbose_name='Название команды',
@@ -70,10 +103,17 @@ class BotUserState(models.Model):
     class State(models.IntegerChoices):
         REGISTER = 0, _("Регистрация")
         SOLVING = 1, _("Решает")
+        CHOOSING = 2, _("Ходит по меню")
 
     state = models.IntegerField(
         choices=State,
         default=State.REGISTER,
+    )
+
+    task = models.OneToOneField(
+        to=Task,
+        on_delete=models.CASCADE,
+        default=None
     )
 
     user = models.OneToOneField(
@@ -87,3 +127,5 @@ class BotUserState(models.Model):
     class Meta:
         verbose_name = 'Состояние пользователя'
         verbose_name_plural = 'Состояния пользователей'
+
+    objects = models.Manager()

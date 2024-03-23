@@ -2,7 +2,7 @@ import telebot
 
 
 class InlineKeyboard(telebot.types.InlineKeyboardMarkup):
-    def __init__(self, text: list[list[str, str]] | list[list[list[str, str]]]):
+    def __init__(self, text: list[(str, str)] | list[(str, str)]):
         super().__init__()
         self.text = text
         self.make_keyboard()
