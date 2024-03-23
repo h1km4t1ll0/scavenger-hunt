@@ -113,7 +113,8 @@ class BotUserState(models.Model):
     task = models.OneToOneField(
         to=Task,
         on_delete=models.CASCADE,
-        default=None
+        default=None,
+        null=True
     )
 
     user = models.OneToOneField(

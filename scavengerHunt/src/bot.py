@@ -2,14 +2,12 @@ import telebot
 
 from scavengerHunt import settings
 from scavengerHunt.models import BotUser, BotUserState, Task
-from scavengerHunt.src.database import get_state
 from scavengerHunt.src.handlers.test_logic import start_command, tasks_command, test_callback, test_solve
 
 bot = telebot.TeleBot(settings.BOT_TOKEN)
 
 
 def register_handlers(_bot: telebot.TeleBot):
-    print("Registering handlers...")
     _bot.register_message_handler(start_command, commands=['start'],
                                   pass_bot=True)
     _bot.register_message_handler(tasks_command, commands=['tasks'],
@@ -19,10 +17,9 @@ def register_handlers(_bot: telebot.TeleBot):
                                          func=lambda call: int(call.data.split()[0]) == Task.Type.SIMPLE, pass_bot=True)
     _bot.register_message_handler(test_solve,
                                   content_types=['text'],
-                                  func=lambda message: get_state(
-                                     BotUser.objects.get(telegram_id=message.from_user.id)) == BotUserState.State.SOLVING,
-                                  pass_bot=True
-                                  )
+                                  func=lambda message:
+                                  BotUser.objects.get(telegram_id=message.from_user.id).botuserstate.state == BotUserState.State.SOLVING,
+                                  pass_bot=True)
 
 
 def pohuy():
