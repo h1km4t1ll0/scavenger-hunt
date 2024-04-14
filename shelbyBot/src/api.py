@@ -1,6 +1,6 @@
 import requests
 
-from scavengerHunt import settings
+from shelbyBot import settings
 
 
 class API:

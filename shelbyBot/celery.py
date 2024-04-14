@@ -3,13 +3,13 @@ import os
 
 from celery import Celery
 
-from scavengerHunt import settings
+from shelbyBot import settings
 
-os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'scavengerHunt.settings')
+os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'shelbyBot.settings')
 
-# app = Celery('scavengerHunt')
+# app = Celery('shelbyBot')
 app = Celery(__name__)
-# app.config_from_object('scavengerHunt.settings')
+# app.config_from_object('shelbyBot.settings')
 app.config_from_object('django.conf:settings', namespace='CELERY')
 # app.config_from_object(__name__)
 # app.conf.broker_url = 'memory://'

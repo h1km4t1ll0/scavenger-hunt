@@ -2,10 +2,10 @@ import logging
 
 from celery.app import shared_task
 
-from scavengerHunt.src.api import API
-from scavengerHunt import settings
-from scavengerHunt.celery import app
-from scavengerHunt.models import OrderDao, BlacklistDAO
+from shelbyBot.src.api import API
+from shelbyBot import settings
+from shelbyBot.celery import app
+from shelbyBot.models import OrderDao, BlacklistDAO
 
 logger = logging.getLogger(__name__)
 
