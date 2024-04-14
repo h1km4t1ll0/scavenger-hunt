@@ -17,10 +17,7 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path
 
-from scavengerHunt import settings
-from scavengerHunt.views import get_message
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path(f'{settings.BOT_TOKEN}', get_message),
 ]

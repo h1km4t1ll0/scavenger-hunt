@@ -1,41 +1,34 @@
 from django import forms
-from .models import *
+
+from .models import UserDAO, BlacklistDAO, OrderDao
 
 
-class BotUserForm(forms.ModelForm):
+class UserDAOForm(forms.ModelForm):
     class Meta:
-        model = BotUser
+        model = UserDAO
         fields = (
-            'telegram_id',
-            'first_name',
-            'second_name',
-            'team'
+            'steamid',
+            'default_step_key',
+            'default_ref_key',
         )
 
-        widgets = {
-            'first_name': forms.TextInput,
-            'second_name': forms.TextInput,
-        }
 
-
-class TeamForm(forms.ModelForm):
+class BlacklistDAOForm(forms.ModelForm):
     class Meta:
-        model = Team
+        model = BlacklistDAO
+        fields = (
+            'steamid',
+        )
+
+
+class OrderDaoForm(forms.ModelForm):
+    class Meta:
+        model = OrderDao
         fields = (
             'name',
-            'unique_team_id'
-        )
-
-        widgets = {
-            'name': forms.TextInput,
-            'unique_team_id': forms.TextInput
-        }
-
-
-class BotUserStateForm(forms.ModelForm):
-    class Meta:
-        model = BotUserState
-        fields = (
-            'state',
-            'user'
+            'max_key',
+            'max_ref',
+            'step_key',
+            'step_ref',
+            'is_active',
         )

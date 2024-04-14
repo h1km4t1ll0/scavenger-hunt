@@ -39,6 +39,7 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'scavengerHunt',
+    # 'celery_app',
 ]
 
 MIDDLEWARE = [
@@ -129,3 +130,31 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 ### SCAVENGER HUNT VARS ###
 BOT_TOKEN = os.environ.get('BOT_TOKEN', None)
 DOMAIN = os.environ.get("DOMAIN", None)
+
+
+# SHELBY ENVS
+DEV_MODE = True
+
+API_KEY: str = "660fce91c3bb7421f90ef849"
+USER_TOKEN: str = "5adcf244cf6c752d9b63bff0"
+API_URL: str = "https://backpack.tf/api"
+APP_ID: str = "440"
+MY_STEAM_ID: str = "76561198302515355"
+
+STEP_REF: int = 3
+STEP_KEY: int = 5
+
+# POSTGRES_URL:str = "postgresql+asyncpg://postgres:postgres@localhost:5432/shelby_bot"
+# POSTGRES_USER:str = "postgres"
+# POSTGRES_PASS:str = "postgres"
+
+# CELERY CONFIG
+CELERY_BEAT_SCHEDULE = {
+    'execute_every_ten_sec': {
+        # 'task': 'scavengerHunt.src.order.work_orders',
+        'task': 'scavengerHunt.tasks.work_orders',
+        'schedule': 60.0,  # Run every 60 seconds (once a minute)
+    },
+}
+CELERY_BROKER_URL = "redis://127.0.0.1:6379/0"
+CELERY_RESULT_BACKEND = "redis://127.0.0.1:6379/0"

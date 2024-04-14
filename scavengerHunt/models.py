@@ -1,89 +1,96 @@
 from django.db import models
-from django.utils.translation import gettext_lazy as _
-
-from scavengerHunt.src.shared import gen_uuid
 
 
-class Team(models.Model):
-    name = models.TextField(
-        verbose_name='Название команды',
+class UserDAO(models.Model):
+    steamid = models.TextField(
+        verbose_name='Steam ID',
         null=False,
         blank=False
     )
-
-    unique_team_id = models.CharField(
-        verbose_name='Идентификатор команды',
-        unique=True,
+    default_step_key = models.IntegerField(
+        verbose_name='Ключи',
         null=False,
         blank=False,
-        max_length=40,
-        default=gen_uuid()
+        default=0
     )
-
-    objects = models.Manager()
-
-    def __str__(self):
-        return self.name
-
-    class Meta:
-        verbose_name = 'Команда'
-        verbose_name_plural = 'Команды'
-
-
-class BotUser(models.Model):
-    telegram_id = models.BigIntegerField(
-        primary_key=True,
-        verbose_name='ID в телеграм',
+    default_ref_key = models.IntegerField(
+        verbose_name='Рефы',
         null=False,
         blank=False,
+        default=0
     )
-
-    first_name = models.TextField(
-        verbose_name='Имя',
-        null=True,
-        blank=False,
-    )
-
-    second_name = models.TextField(
-        verbose_name='Фамилия',
-        null=True,
-        blank=False,
-    )
-
-    team = models.ForeignKey(
-        to=Team,
-        on_delete=models.CASCADE,
-        verbose_name='Команда'
-    )
-
     objects = models.Manager()
 
-    def __str__(self):
-        return f'{self.first_name} {self.second_name}'
-
     class Meta:
-        verbose_name = 'Пользователь бота'
-        verbose_name_plural = 'Пользователи бота'
-
-
-class BotUserState(models.Model):
-    class State(models.IntegerChoices):
-        REGISTER = 0, _("Регистрация")
-        SOLVING = 1, _("Решает")
-
-    state = models.IntegerField(
-        choices=State,
-        default=State.REGISTER,
-    )
-
-    user = models.OneToOneField(
-        to=BotUser,
-        on_delete=models.CASCADE,
-    )
+        verbose_name = 'Пользователь'
+        verbose_name_plural = 'Пользователи'
 
     def __str__(self):
-        return str(self.user)
+        return '#' + str(self.steamid)
+
+
+class BlacklistDAO(models.Model):
+    steamid = models.TextField(
+        verbose_name='Steam ID',
+        null=False,
+        blank=False
+    )
+    objects = models.Manager()
 
     class Meta:
-        verbose_name = 'Состояние пользователя'
-        verbose_name_plural = 'Состояния пользователей'
+        verbose_name = 'Забаненный аккаунт'
+        verbose_name_plural = 'Забаненные аккаунты'
+
+    def __str__(self):
+        return '#' + str(self.steamid)
+
+
+class OrderDao(models.Model):
+    def __str__(self):
+        return '#' + str(self.bpid)
+
+    objects = models.Manager()
+    bpid = models.TextField(
+        verbose_name='Backpack ID',
+        null=False,
+        blank=False
+    )
+    name = models.TextField(
+        verbose_name='Имя предмета',
+        null=False,
+        blank=False
+    )
+    max_key = models.IntegerField(
+        verbose_name='Максимальное количество ключей',
+        null=False,
+        blank=False,
+        default=0
+    )
+    max_ref = models.IntegerField(
+        verbose_name='Максимальное количество рефов',
+        null=False,
+        blank=False,
+        default=0
+    )
+    step_key = models.IntegerField(
+        verbose_name='Шаг ключа',
+        null=False,
+        blank=False,
+        default=0
+    )
+    step_ref = models.IntegerField(
+        verbose_name='Шаг рефа',
+        null=False,
+        blank=False,
+        default=0
+    )
+    is_active = models.BooleanField(
+        verbose_name='Активно',
+        null=False,
+        blank=False,
+        default=False
+    )
+
+    class Meta:
+        verbose_name = 'Ордер'
+        verbose_name_plural = 'Ордеры'

@@ -1,38 +1,39 @@
 from django.contrib import admin
-from .forms import *
+
+from .forms import UserDAOForm, BlacklistDAOForm, OrderDaoForm
+from .models import UserDAO, BlacklistDAO, OrderDao
 
 
-@admin.register(BotUser)
-class BotUserAdmin(admin.ModelAdmin):
+@admin.register(UserDAO)
+class UserDAOAdmin(admin.ModelAdmin):
     list_display = [
-        'telegram_id',
-        'first_name',
-        'second_name',
-        'team'
+        'steamid',
+        'default_step_key',
+        'default_ref_key',
     ]
 
-    form = BotUserForm
+    form = UserDAOForm
 
 
-@admin.register(BotUserState)
-class BotUserStateAdmin(admin.ModelAdmin):
+@admin.register(BlacklistDAO)
+class BlacklistDAOAdmin(admin.ModelAdmin):
     list_display = [
-        'user',
-        'state'
+        'steamid',
     ]
 
-    form = BotUserStateForm
+    form = BlacklistDAOForm
 
 
-@admin.register(Team)
-class TeamAdmin(admin.ModelAdmin):
+@admin.register(OrderDao)
+class OrderDaoAdmin(admin.ModelAdmin):
     list_display = [
+        'bpid',
         'name',
-        'unique_team_id',
-        'members'
+        'max_key',
+        'max_ref',
+        'step_key',
+        'step_ref',
+        'is_active',
     ]
 
-    def members(self, team: Team) -> str:
-        return ''.join(f'{member.first_name} {member.second_name}' for member in team.botuser_set.all())
-
-    form = TeamForm
+    form = OrderDaoForm
