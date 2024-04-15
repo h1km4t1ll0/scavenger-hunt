@@ -15,7 +15,6 @@ from pathlib import Path
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
-
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/5.0/howto/deployment/checklist/
 
@@ -23,10 +22,15 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = 'django-insecure-%8&a)j$$*52dz+dp_-94r5&ce9=u*o5r-yn11l3%1734#s&bvx'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = os.environ.get("DEBUG", False)
+DOMAIN = os.environ.get("DOMAIN", None)
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = [DOMAIN, '127.0.0.1', 'localhost', f'https://{DOMAIN}']
+if not DEBUG:
+    CSRF_TRUSTED_ORIGINS = [f'https://{DOMAIN}']
 
+if os.environ.get("SERVER", '') in ["True", True]:
+    CSRF_TRUSTED_ORIGINS = [f'https://{DOMAIN}']
 
 # Application definition
 
@@ -38,8 +42,7 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'shelbyBot',
-    # 'celery_app',
+    'shelbyBot'
 ]
 
 MIDDLEWARE = [
@@ -73,7 +76,6 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'shelbyBot.wsgi.application'
 
-
 # Database
 # https://docs.djangoproject.com/en/5.0/ref/settings/#databases
 
@@ -88,21 +90,19 @@ if DEBUG:
 if os.environ.get("SERVER", '') in ["True", True]:
     DATABASES = {
         'default': {
-             'ENGINE': 'django.db.backends.postgresql',
-             'NAME': os.environ.get("DATABASE_NAME", ''),
-             'USER': os.environ.get('DATABASE_USER', ''),
-             'PASSWORD': os.environ.get('DATABASE_PASSWORD', ''),
-             'HOST':  os.environ.get('DATABASE_HOST', ''),
-             'PORT': os.environ.get("DATABASE_PORT", ''),
-         }
-     }
-
+            'ENGINE': 'django.db.backends.postgresql',
+            'NAME': os.environ.get("DATABASE_NAME", ''),
+            'USER': os.environ.get('DATABASE_USER', ''),
+            'PASSWORD': os.environ.get('DATABASE_PASSWORD', ''),
+            'HOST': os.environ.get('DATABASE_HOST', ''),
+            'PORT': os.environ.get("DATABASE_PORT", ''),
+        }
+    }
 
 # Password validation
 # https://docs.djangoproject.com/en/5.0/ref/settings/#auth-password-validators
 
 AUTH_PASSWORD_VALIDATORS = []
-
 
 # Internationalization
 # https://docs.djangoproject.com/en/5.0/topics/i18n/
@@ -115,7 +115,6 @@ USE_I18N = True
 
 USE_TZ = True
 
-
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/5.0/howto/static-files/
 
@@ -126,29 +125,17 @@ STATIC_URL = 'static/'
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
+### SHELBY VARS ###
+API_KEY: str = os.environ.get("API_KEY", '')  # "660fce91c3bb7421f90ef849"
+USER_TOKEN: str = os.environ.get("USER_TOKEN", '')  # "5adcf244cf6c752d9b63bff0"
+API_URL: str = os.environ.get("API_URL", '')  # "https://backpack.tf/api"
+APP_ID: str = os.environ.get("APP_ID", '')  # "440"
+MY_STEAM_ID: str = os.environ.get("MY_STEAM_ID", '')  # "76561198302515355"
+STEP_REF: int = int(os.environ.get("STEP_REF", 3))  # 3
+STEP_KEY: int = int(os.environ.get("STEP_KEY", 5))  # 5
+CELERY_BROKER_URL = os.environ.get("CELERY_BROKER_URL", '')  # "redis://127.0.0.1:6379/0"
+CELERY_RESULT_BACKEND = os.environ.get("CELERY_RESULT_BACKEND", '')  # "redis://127.0.0.1:6379/0"
 
-### SCAVENGER HUNT VARS ###
-BOT_TOKEN = os.environ.get('BOT_TOKEN', None)
-DOMAIN = os.environ.get("DOMAIN", None)
-
-
-# SHELBY ENVS
-DEV_MODE = True
-
-API_KEY: str = "660fce91c3bb7421f90ef849"
-USER_TOKEN: str = "5adcf244cf6c752d9b63bff0"
-API_URL: str = "https://backpack.tf/api"
-APP_ID: str = "440"
-MY_STEAM_ID: str = "76561198302515355"
-
-STEP_REF: int = 3
-STEP_KEY: int = 5
-
-# POSTGRES_URL:str = "postgresql+asyncpg://postgres:postgres@localhost:5432/shelby_bot"
-# POSTGRES_USER:str = "postgres"
-# POSTGRES_PASS:str = "postgres"
-
-# CELERY CONFIG
 CELERY_BEAT_SCHEDULE = {
     'execute_every_ten_sec': {
         # 'task': 'shelbyBot.src.order.work_orders',
@@ -156,5 +143,3 @@ CELERY_BEAT_SCHEDULE = {
         'schedule': 60.0,  # Run every 60 seconds (once a minute)
     },
 }
-CELERY_BROKER_URL = "redis://127.0.0.1:6379/0"
-CELERY_RESULT_BACKEND = "redis://127.0.0.1:6379/0"
