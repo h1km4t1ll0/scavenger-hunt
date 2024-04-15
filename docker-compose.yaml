@@ -33,12 +33,15 @@ services:
       - MY_STEAM_ID=76561198302515355
       - STEP_REF=3
       - STEP_KEY=5
-      - DEBUG=True
+      - DEBUG=False
+      - DOMAIN=shelbybot.ru
       - SERVER=True
     ports:
       - "87:8000"
     depends_on:
       - shelby-database
+    volumes:
+      - django-static:/app/static/
     networks:
       nw:
         aliases:
@@ -62,7 +65,7 @@ services:
       - MY_STEAM_ID=76561198302515355
       - STEP_REF=3
       - STEP_KEY=5
-      - DEBUG=True
+      - DEBUG=False
       - SERVER=True
     depends_on:
       - redis
@@ -89,7 +92,7 @@ services:
       - MY_STEAM_ID=76561198302515355
       - STEP_REF=3
       - STEP_KEY=5
-      - DEBUG=True
+      - DEBUG=False
       - SERVER=True
     depends_on:
       - celery
@@ -115,3 +118,4 @@ networks:
 
 volumes:
   elof_shelby_database:
+  django-static:
