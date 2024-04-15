@@ -120,21 +120,23 @@ USE_TZ = True
 
 STATIC_URL = 'static/'
 
+STATIC_ROOT = '/app/static/'
+
 # Default primary key field type
 # https://docs.djangoproject.com/en/5.0/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 ### SHELBY VARS ###
-API_KEY: str = os.environ.get("API_KEY", '')  # "660fce91c3bb7421f90ef849"
-USER_TOKEN: str = os.environ.get("USER_TOKEN", '')  # "5adcf244cf6c752d9b63bff0"
-API_URL: str = os.environ.get("API_URL", '')  # "https://backpack.tf/api"
-APP_ID: str = os.environ.get("APP_ID", '')  # "440"
-MY_STEAM_ID: str = os.environ.get("MY_STEAM_ID", '')  # "76561198302515355"
+API_KEY: str = os.environ.get("API_KEY", '')
+USER_TOKEN: str = os.environ.get("USER_TOKEN", '')
+API_URL: str = os.environ.get("API_URL", '')
+APP_ID: str = os.environ.get("APP_ID", '')
+MY_STEAM_ID: str = os.environ.get("MY_STEAM_ID", '')
 STEP_REF: int = int(os.environ.get("STEP_REF", 3))  # 3
 STEP_KEY: int = int(os.environ.get("STEP_KEY", 5))  # 5
-CELERY_BROKER_URL = os.environ.get("CELERY_BROKER_URL", '')  # "redis://127.0.0.1:6379/0"
-CELERY_RESULT_BACKEND = os.environ.get("CELERY_RESULT_BACKEND", '')  # "redis://127.0.0.1:6379/0"
+CELERY_BROKER_URL = os.environ.get("CELERY_BROKER_URL", '')
+CELERY_RESULT_BACKEND = os.environ.get("CELERY_RESULT_BACKEND", '')
 
 CELERY_BEAT_SCHEDULE = {
     'execute_every_ten_sec': {

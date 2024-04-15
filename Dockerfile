@@ -6,7 +6,7 @@ WORKDIR /app
 
 # ---- Dependencies ----
 FROM base AS dependencies
-RUN DEBIAN_FRONTEND=noninteractive apt install -y gcc python3-dev libpq-dev
+RUN DEBIAN_FRONTEND=noninteractive apt install -y gcc python3-dev libpq-dev postgresql-contrib
 
 # ---- Release ----
 FROM dependencies AS build
@@ -16,4 +16,4 @@ COPY requirements.txt /app
 RUN pip3 install -r requirements.txt
 COPY ./ /app
 RUN chmod +x /app/entrypoint.sh
-ENTRYPOINT ["/app/entrypoint.sh"]
+#ENTRYPOINT ["/app/entrypoint.sh"]
